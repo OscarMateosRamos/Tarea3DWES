@@ -9,21 +9,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-//@Entity
-//@Table(name = "personas")
+@Entity
+@Table(name = "personas")
 
 public class Persona {
 
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
 
-//	@Column(name = "nombre")
+	@Column(name = "nombre")
 	private String nombre;
 
-//	@Column(name = "email")
-	private String mensaje;
+	@Column(name = "email" , unique=true)
+	private String email;
+	
+	
 
 	public Persona() {
 
@@ -80,5 +82,7 @@ public class Persona {
 	public String toString() {
 		return "Persona [id=" + id + ", nombre=" + nombre + ", mensaje=" + mensaje + "]";
 	}
+	
+	
 
 }
