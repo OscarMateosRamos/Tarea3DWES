@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,49 +25,60 @@ public class Persona {
 	@Column(name = "nombre")
 	private String nombre;
 
-	@Column(name = "email" , unique=true)
-	private String email;
 	
+	
+	@OneToOne
+	@JoinColumn(name = "idcredencial")
+	private long idceredencial;
 	
 
 	public Persona() {
 
 	}
 
-	public Persona(long id, String nombre, String mensaje) {
+	
+	public Persona(long id, String nombre, long idceredencial) {
 		this.id = id;
 		this.nombre = nombre;
-		this.mensaje = mensaje;
+		this.idceredencial = idceredencial;
 	}
-
+	
+	
 	public long getId() {
 		return id;
 	}
+
 
 	public void setId(long id) {
 		this.id = id;
 	}
 
+
 	public String getNombre() {
 		return nombre;
 	}
+
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public String getMensaje() {
-		return mensaje;
+
+	public long getIdceredencial() {
+		return idceredencial;
 	}
 
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
+
+	public void setIdceredencial(long idceredencial) {
+		this.idceredencial = idceredencial;
 	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, mensaje, nombre);
+		return Objects.hash(id, idceredencial, nombre);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -75,13 +89,16 @@ public class Persona {
 		if (getClass() != obj.getClass())
 			return false;
 		Persona other = (Persona) obj;
-		return id == other.id && Objects.equals(mensaje, other.mensaje) && Objects.equals(nombre, other.nombre);
+		return id == other.id && idceredencial == other.idceredencial && Objects.equals(nombre, other.nombre);
 	}
+
 
 	@Override
 	public String toString() {
-		return "Persona [id=" + id + ", nombre=" + nombre + ", mensaje=" + mensaje + "]";
+		return "Persona [id=" + id + ", nombre=" + nombre + ", idceredencial=" + idceredencial + "]";
 	}
+
+
 	
 	
 
