@@ -23,7 +23,7 @@ public class Ejemplar implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column
 	private String nombre;
@@ -32,27 +32,27 @@ public class Ejemplar implements Serializable {
 	@JoinColumn(name = "idplanta")
 	private Planta planta;
 
-//	@OneToMany(cascade = CascadeType.ALL)
-//
-//	@JoinColumn(name = "idejemplar")
-//	private List<Mensaje> mensajes = new LinkedList<Mensaje>();
+	@OneToMany(cascade = CascadeType.ALL)
+
+	@JoinColumn(name = "idejemplar")
+	private List<Mensaje> mensajes = new LinkedList<Mensaje>();
 
 	public Ejemplar() {
 
 	}
 
-	public Ejemplar(long id, String nombre, Planta planta, List<Mensaje> mensajes) {
+	public Ejemplar(Long id, String nombre, Planta planta, List<Mensaje> mensajes) {
 		this.id = id;
 		this.nombre = nombre;
 		this.planta = planta;
-//		this.mensajes = mensajes;
+		this.mensajes = mensajes;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -72,12 +72,35 @@ public class Ejemplar implements Serializable {
 		this.planta = planta;
 	}
 
-//	public List<Mensaje> getMensajes() {
-//		return mensajes;
-//	}
-//
-//	public void setMensajes(List<Mensaje> mensajes) {
-//		this.mensajes = mensajes;
-//	}
+	public List<Mensaje> getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(List<Mensaje> mensajes) {
+		this.mensajes = mensajes;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, mensajes, nombre, planta);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ejemplar other = (Ejemplar) obj;
+		return id == other.id && Objects.equals(mensajes, other.mensajes) && Objects.equals(nombre, other.nombre)
+				&& Objects.equals(planta, other.planta);
+	}
+
+	@Override
+	public String toString() {
+		return "Ejemplar [id=" + id + ", nombre=" + nombre + ", planta=" + planta + ", mensajes=" + mensajes + "]";
+	}
 
 }

@@ -18,7 +18,7 @@ public class Credenciales implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column(name = "usuario", unique = true)
 	private String usuario;
@@ -30,7 +30,7 @@ public class Credenciales implements Serializable {
 
 	}
 
-	public Credenciales(long id, String usuario, String mensaje) {
+	public Credenciales(Long id, String usuario, String mensaje) {
 		this.id = id;
 		this.usuario = usuario;
 		this.mensaje = mensaje;
@@ -40,7 +40,7 @@ public class Credenciales implements Serializable {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -85,7 +85,5 @@ public class Credenciales implements Serializable {
 	public String toString() {
 		return "Credenciales [id=" + id + ", usuario=" + usuario + ", mensaje=" + mensaje + "]";
 	}
-	
-	
 
 }

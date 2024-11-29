@@ -2,6 +2,7 @@ package com.Tarea3DWESOscar.modelo;
 
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -20,24 +22,24 @@ public class Persona {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private long id;
+	private Long id;
 
 	@Column(name = "nombre")
 	private String nombre;
 
 	
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "idcredencial")
-	private long idceredencial;
+	private Credenciales idceredencial;
 	
-
+	
 	public Persona() {
 
 	}
 
 	
-	public Persona(long id, String nombre, long idceredencial) {
+	public Persona(long id, String nombre, Credenciales idceredencial) {
 		this.id = id;
 		this.nombre = nombre;
 		this.idceredencial = idceredencial;
@@ -64,12 +66,12 @@ public class Persona {
 	}
 
 
-	public long getIdceredencial() {
+	public Credenciales getIdceredencial() {
 		return idceredencial;
 	}
 
 
-	public void setIdceredencial(long idceredencial) {
+	public void setIdceredencial(Credenciales idceredencial) {
 		this.idceredencial = idceredencial;
 	}
 
