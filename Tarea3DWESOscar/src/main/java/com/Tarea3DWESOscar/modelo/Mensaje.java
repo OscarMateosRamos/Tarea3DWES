@@ -10,19 +10,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-//@Entity
-//@Table(name = "mensajes")
+@Entity
+@Table(name = "mensajes")
 public class Mensaje {
 
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private long id;
 	
-//	@Column(name = "nombrecomun")
+	@Column(name = "fechahora")
 	private LocalDateTime fechahora;
-
-//	@Column(name = "nombrecientifico")
+	@Column(name = "mensaje")
 	private String mensaje;
 
 	public Mensaje() {
