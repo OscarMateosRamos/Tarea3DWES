@@ -12,18 +12,49 @@ public class ServiciosPlanta {
 
 	@Autowired
 	PlantaRepository plantarepo;
-	
+
 //	@Autowired
 //	EjemplarRepository ejemplarrepo;
-	
-	public boolean validarPlanta(Planta p) {
-		
-		return true;	
+
+	public boolean validarPlanta(Planta pl) {
+
+		if (pl.getCodigo().isEmpty()) {
+
+			return false;
+		}
+
+		if (pl.getCodigo().length() < 3 || pl.getCodigo().length() > 20) {
+			return false;
+		}
+
+		if (plantarepo.findById(pl)) {
+			System.out.println("Ya existe el codigo");
+			return false;
+		}
+
+		if (pl.getNombrecientifico().length() > 45) {
+			return false;
+		}
+
+		if (pl.getNombrecomun().length() > 40) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	public void insertarPlanta(Planta pl) {
+		plantarepo.saveAndFlush(pl);
 	}
 	
 	
-	public void insertarPlanta(Planta p) {
-		plantarepo.saveAndFlush(p);
+	public void modificarPlanta(Planta pl) {
+		plantarepo.saveAndFlush(pl);
+	}
+	
+	public void verPlanta(Planta pl) {
+		plantarepo.findAll();
 	}
 	
 	
