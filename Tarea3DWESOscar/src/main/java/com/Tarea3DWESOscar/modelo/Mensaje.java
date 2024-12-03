@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "mensajes")
@@ -23,22 +25,30 @@ public class Mensaje {
 	private Long id;
 
 	@Column(name = "fechahora")
+	@Temporal(TemporalType.TIME)
 	private LocalDateTime fechahora;
 	@Column(name = "mensaje")
 	private String mensaje;
-//
-//	@ManyToOne
-//	@JoinColumn(name = "idejemplar")
-//	private Long idejemplar;
-//
-//	@ManyToOne
-//	@JoinColumn(name = "idpersona")
-//	private Long idpersona;
+
+	@ManyToOne
+	@JoinColumn(name = "idejemplar")
+	private Long idejemplar;
+
+	@ManyToOne
+	@JoinColumn(name = "idpersona")
+	private Persona persona;
 
 	public Mensaje() {
 
 	}
 
+	public Mensaje(Long id, LocalDateTime fechahora, String mensaje, Long idejemplar, Persona persona) {
+		this.id = id;
+		this.fechahora = fechahora;
+		this.mensaje = mensaje;
+		this.idejemplar = idejemplar;
+		this.persona = persona;
+	}
 
 	public Long getId() {
 		return id;
@@ -64,11 +74,29 @@ public class Mensaje {
 		this.mensaje = mensaje;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(fechahora, id, idejemplar, mensaje, persona);
+	}
 
-	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Mensaje other = (Mensaje) obj;
+		return Objects.equals(fechahora, other.fechahora) && Objects.equals(id, other.id)
+				&& Objects.equals(idejemplar, other.idejemplar) && Objects.equals(mensaje, other.mensaje)
+				&& Objects.equals(persona, other.persona);
+	}
 
-	
-
+	@Override
+	public String toString() {
+		return "Mensaje [id=" + id + ", fechahora=" + fechahora + ", mensaje=" + mensaje + ", idejemplar=" + idejemplar
+				+ ", persona=" + persona + "]";
+	}
 
 }
