@@ -30,13 +30,13 @@ public class Credenciales implements Serializable {
 
 	}
 
-	public Credenciales(Long id, String usuario, String mensaje) {
+	public Credenciales(Long id, String usuario, String password) {
 		this.id = id;
 		this.usuario = usuario;
-		this.mensaje = mensaje;
+		this.password = password;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -52,21 +52,23 @@ public class Credenciales implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public String getMensaje() {
-		return mensaje;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+	
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, mensaje, usuario);
+		return Objects.hash(id, password, usuario);
 	}
 
 	@Override
@@ -78,12 +80,13 @@ public class Credenciales implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Credenciales other = (Credenciales) obj;
-		return id == other.id && Objects.equals(mensaje, other.mensaje) && Objects.equals(usuario, other.usuario);
+		return Objects.equals(id, other.id) && Objects.equals(password, other.password)
+				&& Objects.equals(usuario, other.usuario);
 	}
 
 	@Override
 	public String toString() {
-		return "Credenciales [id=" + id + ", usuario=" + usuario + ", mensaje=" + mensaje + "]";
+		return "Credenciales [id=" + id + ", usuario=" + usuario + ", password=" + password + "]";
 	}
 
 }
