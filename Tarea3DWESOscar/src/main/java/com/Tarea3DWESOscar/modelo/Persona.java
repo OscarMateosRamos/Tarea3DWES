@@ -27,11 +27,12 @@ public class Persona {
 	@Column(name = "nombre")
 	private String nombre;
 
-	
+	@Column(name = "email")
+	private String email;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "idcredencial")
-	private Credenciales idceredencial;
+	private Credenciales credencial;
 	
 	
 	public Persona() {
@@ -39,21 +40,27 @@ public class Persona {
 	}
 
 	
-	public Persona(long id, String nombre, Credenciales idceredencial) {
+	
+	public Persona(Long id, String nombre, String email, Credenciales credencial) {
+		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.idceredencial = idceredencial;
+		this.email = email;
+		this.credencial = credencial;
 	}
-	
-	
-	public long getId() {
+
+
+
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
+
 
 
 	public String getNombre() {
@@ -61,25 +68,42 @@ public class Persona {
 	}
 
 
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
 
-	public Credenciales getIdceredencial() {
-		return idceredencial;
+
+	public String getEmail() {
+		return email;
 	}
 
 
-	public void setIdceredencial(Credenciales idceredencial) {
-		this.idceredencial = idceredencial;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
+
+
+	public Credenciales getCredencial() {
+		return credencial;
+	}
+
+
+
+	public void setCredencial(Credenciales credencial) {
+		this.credencial = credencial;
+	}
+
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, idceredencial, nombre);
+		return Objects.hash(credencial, email, id, nombre);
 	}
+
 
 
 	@Override
@@ -91,15 +115,16 @@ public class Persona {
 		if (getClass() != obj.getClass())
 			return false;
 		Persona other = (Persona) obj;
-		return id == other.id && idceredencial == other.idceredencial && Objects.equals(nombre, other.nombre);
+		return Objects.equals(credencial, other.credencial) && Objects.equals(email, other.email)
+				&& Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre);
 	}
+
 
 
 	@Override
 	public String toString() {
-		return "Persona [id=" + id + ", nombre=" + nombre + ", idceredencial=" + idceredencial + "]";
+		return "Persona [id=" + id + ", nombre=" + nombre + ", email=" + email + ", credencial=" + credencial + "]";
 	}
-
 
 	
 	
