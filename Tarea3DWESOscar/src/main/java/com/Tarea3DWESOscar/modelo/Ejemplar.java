@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +24,7 @@ public class Ejemplar implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long id;
 
 	@Column
@@ -33,9 +35,8 @@ public class Ejemplar implements Serializable {
 	private Planta planta;
 
 	@OneToMany(cascade = CascadeType.ALL)
-
 	@JoinColumn(name = "idejemplar")
-	private List<Mensaje> mensajes = new LinkedList<Mensaje>();
+	private List<Mensaje> mensajes;
 
 	public Ejemplar() {
 

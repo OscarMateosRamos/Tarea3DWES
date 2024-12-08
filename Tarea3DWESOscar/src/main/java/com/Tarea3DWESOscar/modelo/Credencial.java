@@ -8,11 +8,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "credenciales")
-public class Credenciales implements Serializable {
+public class Credencial implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,12 +26,15 @@ public class Credenciales implements Serializable {
 
 	@Column(name = "password")
 	private String password;
-
-	public Credenciales() {
+	
+	@OneToOne(mappedBy="credencial")
+	private Persona persona;
+	
+	public Credencial() {
 
 	}
 
-	public Credenciales(Long id, String usuario, String password) {
+	public Credencial(Long id, String usuario, String password) {
 		this.id = id;
 		this.usuario = usuario;
 		this.password = password;
@@ -79,7 +83,7 @@ public class Credenciales implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Credenciales other = (Credenciales) obj;
+		Credencial other = (Credencial) obj;
 		return Objects.equals(id, other.id) && Objects.equals(password, other.password)
 				&& Objects.equals(usuario, other.usuario);
 	}
