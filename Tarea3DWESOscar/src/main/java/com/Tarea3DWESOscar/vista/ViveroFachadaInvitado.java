@@ -1,6 +1,7 @@
 package com.Tarea3DWESOscar.vista;
 
 import java.util.InputMismatchException;
+
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class ViveroFachadaInvitado {
 				}
 				switch (opcion) {
 				case 1:
-					Planta pl = new Planta();
-					servPlanta.verPlanta(pl);
+
+					servPlanta.vertodasPlantas();
 					break;
 
 				case 2:
