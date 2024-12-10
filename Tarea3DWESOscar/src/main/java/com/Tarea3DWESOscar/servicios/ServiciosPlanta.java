@@ -49,15 +49,18 @@ public class ServiciosPlanta {
 		plantarepo.saveAndFlush(pl);
 	}
 
-	public void vertodasPlantas() {
-
-		System.out.println("----LISTADO DE PLANTAS-----");
+	public List<Planta> vertodasPlantas() {
 		List<Planta> plantas = plantarepo.findAllByOrderByNombrecomunAsc();
-		for (Planta p : plantas) {
-			System.out.println(p);
-		}
-		System.out.println("----------------------------");
+		return plantas;
 	}
+	
+//	public void vertodasPlantas() {
+//		List<Planta> plantas = plantarepo.findAllByOrderByNombrecomunAsc();
+//		for (Planta p : plantas) {
+//			System.out.println(p);
+//		}
+//
+//	}
 
 	public boolean existeCodigoPlanta(String codigo) {
 		List<Planta> plantas = plantarepo.findAll();
