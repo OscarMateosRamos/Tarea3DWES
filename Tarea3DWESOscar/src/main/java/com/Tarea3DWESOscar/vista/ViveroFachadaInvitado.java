@@ -15,6 +15,9 @@ public class ViveroFachadaInvitado {
 	@Autowired
 	ServiciosPlanta servPlanta;
 
+	@Autowired
+	ViveroFachadaAdmin fachadaAdmin;
+
 	public void mostrarMenuPrincipal() {
 		int opcion = 0;
 		Scanner sc = new Scanner(System.in);
@@ -31,8 +34,7 @@ public class ViveroFachadaInvitado {
 				}
 				switch (opcion) {
 				case 1:
-
-					servPlanta.vertodasPlantas();
+					fachadaAdmin.ListarPlantas();
 					break;
 
 				case 2:

@@ -8,9 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.Tarea3DWESOscar.servicios.Controlador;
+import com.Tarea3DWESOscar.servicios.ServiciosCredenciales;
 import com.Tarea3DWESOscar.servicios.ServiciosPlanta;
 import com.Tarea3DWESOscar.vista.ViveroFachadaAdmin;
 import com.Tarea3DWESOscar.vista.ViveroFachadaInvitado;
+import com.Tarea3DWESOscar.vista.ViveroFachadaPersonal;
 
 @SpringBootApplication
 public class Principal implements CommandLineRunner {
@@ -18,18 +20,21 @@ public class Principal implements CommandLineRunner {
 	ServiciosPlanta servplanta;
 
 	@Autowired
+	ServiciosCredenciales servCredenciales;
+	@Autowired
 	ViveroFachadaInvitado fachadaInvitado;
 
 	@Autowired
 	ViveroFachadaAdmin fachadaAdmin;
+
+	@Autowired
+	ViveroFachadaPersonal fachadaPersonal;
+
 	@Autowired
 	Controlador controlador;
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("INI");
-
-		// fachadaAdmin.mostrarMenuPrincipal();
 
 		int opcion = 0;
 
@@ -51,29 +56,34 @@ public class Principal implements CommandLineRunner {
 					fachadaInvitado.mostrarMenuPrincipal();
 					break;
 				case 2:
-					/*
-					 * sc = new Scanner(System.in); System.out.println(" Introduce Usuario"); String
-					 * usuario = sc.nextLine(); System.out.println("Introduce Contraseña"); String
-					 * password = sc.nextLine();
-					 * 
-					 * //boolean userOk =
-					 * Controlador.getServicios().getServiciosCredenciales().validarCredencial(
-					 * usuario, // password); //if (userOk) { // controlador.setUsername(usuario);
-					 * System.out.println("Usuario y password Correcto");
-					 * 
-					 * //ViveroFachadaPersonal portalPersonal = ViveroFachadaPersonal.getPortal();
-					 * //portalPersonal.getPortal().mostrarMenuPrincipal(); } else {
-					 * System.out.println("Usuario y password Erroneo"); }
-					 */
-					break;
-
-				case 3:
 
 					sc = new Scanner(System.in);
 					System.out.println(" Introduce Usuario");
 					String usuario = sc.nextLine();
 					System.out.println("Introduce Contraseña");
 					String password = sc.nextLine();
+
+					if (!servCredenciales.verificaUsuario(usuario, password)) {
+						System.out.println("Las credenciales introducidas no existen: ");
+						break;
+					} else {
+						System.out.println("Credenciales correctas verificación exitosa");
+
+						System.out.println("--Bienvenido " + usuario + "-------");
+						controlador.setUsername(usuario);
+
+						fachadaPersonal.mostrarMenuPrincipal();
+					}
+
+					break;
+
+				case 3:
+
+					sc = new Scanner(System.in);
+					System.out.println(" Introduce Usuario");
+					usuario = sc.nextLine();
+					System.out.println("Introduce Contraseña");
+					password = sc.nextLine();
 
 					if (usuario.equals("admin") && password.equals("admin")) {
 						System.out.println("--Bienvenido Admin--");

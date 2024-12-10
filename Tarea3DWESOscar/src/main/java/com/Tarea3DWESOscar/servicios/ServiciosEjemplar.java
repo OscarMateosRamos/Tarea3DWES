@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.Tarea3DWESOscar.modelo.Ejemplar;
 import com.Tarea3DWESOscar.modelo.Mensaje;
 import com.Tarea3DWESOscar.modelo.Persona;
+import com.Tarea3DWESOscar.modelo.Planta;
 import com.Tarea3DWESOscar.repositories.EjemplarRepository;
 
 @Service
@@ -54,23 +55,47 @@ public class ServiciosEjemplar {
 				Optional<Persona> personas = servPersona.buscarPorId(Long.valueOf(1));
 				m.setPersona(personas.get());
 				servMensaje.insertar(m);
-
 			}
-
 		}
 
 	}
 
-	public ArrayList<Ejemplar> listaejemplaresPorTipoPlanta(String codigo) {
+	public List<Ejemplar> listaejemplaresPorTipoPlanta(String codigo) {
 		List<Ejemplar> ejemplares = ejemplarrepo.ejemplaresPorTipoPlanta(codigo);
-		return new ArrayList<>(ejemplares);
+		return ejemplares;
 	}
 
-	public Optional<Ejemplar> buscarPorNombre(String nombre) {
-		Optional<Ejemplar> ejemplares = ejemplarrepo.findByNombre(nombre);
+	public Ejemplar buscarPorNombre(String nombre) {
+		Ejemplar ej = new Ejemplar();
+		List<Ejemplar> ejemplares = ejemplarrepo.findAll();
+		for (Ejemplar e : ejemplares) {
+			if (e.getNombre().equals(nombre)) {
+				ej = e;
+			}
+		}
+		return ej;
+	}
 
-		return ejemplares;
+	public boolean existeIdEjemplar(Long id) {
+		List<Ejemplar> ejemplares = ejemplarrepo.findAll();
 
+		for (Ejemplar e : ejemplares) {
+			if (e.getId() == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean existeNombreEjemplar(String nombre) {
+		List<Ejemplar> ejemplares = ejemplarrepo.findAll();
+
+		for (Ejemplar e : ejemplares) {
+			if (e.getNombre().equals(nombre)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

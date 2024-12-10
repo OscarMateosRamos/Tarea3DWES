@@ -17,8 +17,10 @@ import com.Tarea3DWESOscar.modelo.Persona;
 import com.Tarea3DWESOscar.modelo.Planta;
 import com.Tarea3DWESOscar.repositories.CredencialRepository;
 import com.Tarea3DWESOscar.repositories.EjemplarRepository;
+import com.Tarea3DWESOscar.repositories.MensajeRepository;
 import com.Tarea3DWESOscar.repositories.PersonaRepository;
 import com.Tarea3DWESOscar.repositories.PlantaRepository;
+import com.Tarea3DWESOscar.servicios.Controlador;
 import com.Tarea3DWESOscar.servicios.ServiciosCredenciales;
 import com.Tarea3DWESOscar.servicios.ServiciosEjemplar;
 import com.Tarea3DWESOscar.servicios.ServiciosMensaje;
@@ -54,6 +56,12 @@ public class ViveroFachadaAdmin {
 
 	@Autowired
 	EjemplarRepository ejemplarrepo;
+
+	@Autowired
+	MensajeRepository mensajerepo;
+
+	@Autowired
+	Controlador controlador;
 
 	public void mostrarMenuPrincipal() {
 		int opcion = 0;
@@ -101,7 +109,7 @@ public class ViveroFachadaAdmin {
 
 	}
 
-	private void menuEjemplares() {
+	public void menuEjemplares() {
 		int opcion = 0;
 		Scanner sc = new Scanner(System.in);
 		do {
@@ -124,7 +132,7 @@ public class ViveroFachadaAdmin {
 					verEjemplaresPorTipoPlanta();
 					break;
 				case 3:
-					// verMensajesPorEjemplar();
+					verMensajesPorEjemplar();
 					break;
 
 				}
@@ -136,6 +144,25 @@ public class ViveroFachadaAdmin {
 			}
 
 		} while (opcion != 4);
+
+	}
+
+	private void verMensajesPorEjemplar() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduce el id del Ejemplar: ");
+		Long id = sc.nextLong();
+
+		if (!servEjemplar.existeIdEjemplar(id)) {
+			System.out.println("El id del Ejemplar no existe");
+		} else {
+			System.out.println("---LISTADO DE MENSAJES POR ID DE EJEMPLAR: " + id + "----");
+			List<Mensaje> mensajes = servMensaje.listamensajesPorIdEjemplar(id);
+
+			for (Mensaje m : mensajes) {
+				System.out.println("Mensaje: " + m.getMensaje() + " Fecha: " + m.getFechahora() + " CREADO POR: "
+						+ m.getPersona().getNombre());
+			}
+		}
 
 	}
 
@@ -158,18 +185,22 @@ public class ViveroFachadaAdmin {
 			System.out.println("--- NO Existe el codigo");
 
 		}
-
 	}
 
 	private void verEjemplaresPorTipoPlanta() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Introduce el tipo de planta: ");
-		String tipo = sc.next();
+		System.out.println("Introduce el codigo de la Planta: ");
+		String codigo = sc.next();
 
-		List<Ejemplar> ejemplares = servEjemplar.listaejemplaresPorTipoPlanta(tipo);
+		if (!servPlanta.existeCodigoPlanta(codigo)) {
+			System.out.println("El codigo de la planta no existe");
+		} else {
+			System.out.println("---LISTADO DE EJEMPLARES POR TIPO DE PLANTA: " + codigo + "----");
+			List<Ejemplar> ejemplares = servEjemplar.listaejemplaresPorTipoPlanta(codigo);
 
-		for (Ejemplar e : ejemplares) {
-			System.out.println("Codigo: " + e.getNombre());
+			for (Ejemplar e : ejemplares) {
+				System.out.println("Id: " + e.getId() + " Nombre: " + e.getNombre());
+			}
 		}
 	}
 
@@ -190,7 +221,7 @@ public class ViveroFachadaAdmin {
 				}
 				switch (opcion) {
 				case 1:
-					servPlanta.vertodasPlantas();
+					ListarPlantas();
 					break;
 				case 2:
 
@@ -237,6 +268,16 @@ public class ViveroFachadaAdmin {
 
 		} while (opcion != 4);
 
+	}
+
+	public void ListarPlantas() {
+		System.out.println("----LISTADO DE PLANTAS-----");
+		List<Planta> plantas = servPlanta.vertodasPlantas();
+
+		for (Planta p : plantas) {
+			System.out.println(p);
+		}
+		System.out.println("-----------------------------");
 	}
 
 	private void menuModificarPlanta() {
@@ -317,7 +358,9 @@ public class ViveroFachadaAdmin {
 					crearMensaje();
 					break;
 				case 2:
+					System.out.println("---LISTADO DE MENSAJES-----");
 					servMensaje.verTodosMensajes();
+					System.out.println("---------------------------");
 					break;
 				case 3:
 					menuFiltrarMensaje();
@@ -342,24 +385,17 @@ public class ViveroFachadaAdmin {
 		System.out.println("Introduce el nombre del ejemplar");
 		String nombre = sc.next();
 
-		List<Ejemplar> ejemplares = ejemplarrepo.findAll();
-		Ejemplar ej = new Ejemplar();
-		Boolean existe = false;
-		for (Ejemplar e : ejemplares) {
-			if (e.getNombre().equals(nombre)) {
-				ej = e;
-				existe = true;
-			}
-		}
-		if (existe == false) {
+		if (!servEjemplar.existeNombreEjemplar(nombre)) {
 			System.out.println("No existe el ejemplar");
 		} else {
+			Ejemplar ej = servEjemplar.buscarPorNombre(nombre);
+			Persona p = servPersona.buscarPorNombre(controlador.getUsername());
+
+			m.setPersona(p);
+			m.setEjemplar(ej);
+
 			System.out.println("Introduce el mensaje: ");
 			String mensaje = sc.next();
-
-			Optional<Persona> personas = servPersona.buscarPorId(Long.valueOf(1));
-			m.setPersona(personas.get());
-			m.setEjemplar(ej);
 
 			LocalDate fechahora = LocalDate.now();
 			Date date = Date.valueOf(fechahora);
@@ -367,7 +403,9 @@ public class ViveroFachadaAdmin {
 			m.setMensaje(mensaje);
 
 			servMensaje.insertar(m);
+
 		}
+
 	}
 
 	private void menuFiltrarMensaje() {
@@ -375,10 +413,11 @@ public class ViveroFachadaAdmin {
 		int opcion = 0;
 		Scanner sc = new Scanner(System.in);
 		do {
-			System.out.println("---Ver Mensaje:---");
+			System.out.println("---Menu filtar mensaje:---");
 			System.out.println("1.  Ver mensaje filtrado por rango de fechas.");
 			System.out.println("2.  Ver mensaje filtrado por persona.");
 			System.out.println("3.  Ver mensaje filtrado por tipo de planta.");
+			System.out.println("4.  Salir.");
 			try {
 				opcion = sc.nextInt();
 				if (opcion < 1 || opcion > 4) {
@@ -392,7 +431,14 @@ public class ViveroFachadaAdmin {
 					System.out.println("Introduce el id de persona");
 					long idPersona = sc.nextLong();
 
-					//mensajesServ.verMensajeIdPersona(idPersona);
+					if (!servPersona.existeidPersona(idPersona)) {
+						System.out.println("El id de la persona no existe");
+						break;
+					} else {
+
+						mensajerepo.mensajesPorIdPersona(idPersona);
+
+					}
 					break;
 
 				case 3:

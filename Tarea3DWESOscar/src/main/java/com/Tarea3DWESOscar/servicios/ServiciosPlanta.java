@@ -53,14 +53,6 @@ public class ServiciosPlanta {
 		List<Planta> plantas = plantarepo.findAllByOrderByNombrecomunAsc();
 		return plantas;
 	}
-	
-//	public void vertodasPlantas() {
-//		List<Planta> plantas = plantarepo.findAllByOrderByNombrecomunAsc();
-//		for (Planta p : plantas) {
-//			System.out.println(p);
-//		}
-//
-//	}
 
 	public boolean existeCodigoPlanta(String codigo) {
 		List<Planta> plantas = plantarepo.findAll();
@@ -69,10 +61,8 @@ public class ServiciosPlanta {
 			if (p.getCodigo().equals(codigo)) {
 				return true;
 			}
-
 		}
 		return false;
-
 	}
 
-}// fin
+}

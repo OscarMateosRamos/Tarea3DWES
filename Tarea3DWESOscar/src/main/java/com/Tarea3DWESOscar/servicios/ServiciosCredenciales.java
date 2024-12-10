@@ -36,7 +36,7 @@ public class ServiciosCredenciales {
 
 	}
 
-	public boolean auntenticaUsuario(String usuario, String password) {
+	public boolean verificaUsuario(String usuario, String password) {
 		List<Credencial> credenciales = credencialrepo.findAll();
 		for (Credencial c : credenciales) {
 			if (c.getUsuario().equals(usuario) && c.getPassword().equals(password)) {
