@@ -34,5 +34,17 @@ public class ServiciosMensaje {
 		return mensajes;
 		
 	}
+	
+	public List<Mensaje> listamensajesPorIdPersona(Long id) {
+		List<Mensaje> mensajes = mensajerepo.mensajesPorIdPersona(id);
+		return mensajes;
+		
+	}
+	
+	public List<Mensaje> listamensajesPorCodigoPlanta(String codigo) {
+		List<Mensaje> mensajes = mensajerepo.mensajesPorCodigoPlanta(codigo);
+		return mensajes;
+		
+	}
 
 }

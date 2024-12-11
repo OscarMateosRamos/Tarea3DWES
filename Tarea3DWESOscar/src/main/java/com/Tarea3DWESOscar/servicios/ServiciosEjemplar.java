@@ -98,4 +98,9 @@ public class ServiciosEjemplar {
 		return false;
 	}
 
+	public List<Ejemplar> vertodosEjemplares() {
+		List<Ejemplar> ejemplares = ejemplarrepo.findAll();
+		return ejemplares;
+	}
+
 }

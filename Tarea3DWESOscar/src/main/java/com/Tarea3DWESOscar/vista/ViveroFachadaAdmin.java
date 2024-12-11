@@ -129,9 +129,12 @@ public class ViveroFachadaAdmin {
 					crearEjemplar();
 					break;
 				case 2:
+
 					verEjemplaresPorTipoPlanta();
 					break;
 				case 3:
+					// listar ejemplare con su id de ejem
+
 					verMensajesPorEjemplar();
 					break;
 
@@ -149,6 +152,7 @@ public class ViveroFachadaAdmin {
 
 	private void verMensajesPorEjemplar() {
 		Scanner sc = new Scanner(System.in);
+		ListarEjemplaresIdNombre();
 		System.out.println("Introduce el id del Ejemplar: ");
 		Long id = sc.nextLong();
 
@@ -167,19 +171,26 @@ public class ViveroFachadaAdmin {
 	}
 
 	private void crearEjemplar() {
+		List<Planta> plantas = plantarepo.findAll();
+		System.out.println("-----LISTADO DE PLANTAS------");
+		for (Planta p : plantas) {
+			System.out.println("Id: " + p.getId() + "Codigo: " + p.getCodigo());
+		}
+
 		Scanner sc = new Scanner(System.in);
-		System.out.println("***Creando ejemplar");
+		System.out.println("Creado nuevo ejemplar de: ");
 		Ejemplar ej = new Ejemplar();
 		System.out.print("Código de la planta del ejemplar: ");
 		String codigo = sc.next().trim().toUpperCase();
 
 		if (servPlanta.existeCodigoPlanta(codigo)) {
-			System.out.println("Existe el codigo");
+		
 
 			ej.setPlanta(plantarepo.findByCodigo(codigo).get());
 			ej.setNombre(codigo);
 
 			servEjemplar.insertarEjemplar(ej);
+			System.out.println("Creado ejemplar: "+codigo);
 
 		} else {
 			System.out.println("--- NO Existe el codigo");
@@ -188,6 +199,8 @@ public class ViveroFachadaAdmin {
 	}
 
 	private void verEjemplaresPorTipoPlanta() {
+		ListarPlantas();
+
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Introduce el codigo de la Planta: ");
 		String codigo = sc.next();
@@ -197,11 +210,16 @@ public class ViveroFachadaAdmin {
 		} else {
 			System.out.println("---LISTADO DE EJEMPLARES POR TIPO DE PLANTA: " + codigo + "----");
 			List<Ejemplar> ejemplares = servEjemplar.listaejemplaresPorTipoPlanta(codigo);
-
-			for (Ejemplar e : ejemplares) {
-				System.out.println("Id: " + e.getId() + " Nombre: " + e.getNombre());
+			if (ejemplares.size() == 0) {
+				System.out.println("No hay ejemplares correspondientes a la planta " + codigo);
+			} else {
+				for (Ejemplar e : ejemplares) {
+					System.out.println("Id: " + e.getId() + " Nombre: " + e.getNombre());
+				}
 			}
+			System.out.println("--------------------------------");
 		}
+
 	}
 
 	private void menuPlantas() {
@@ -275,7 +293,18 @@ public class ViveroFachadaAdmin {
 		List<Planta> plantas = servPlanta.vertodasPlantas();
 
 		for (Planta p : plantas) {
-			System.out.println(p);
+			System.out.println("Id: " + p.getId() + " Codigo: " + p.getCodigo() + " Nombre Comun: " + p.getNombrecomun()
+					+ " Nombre Cientifico: " + p.getNombrecientifico());
+		}
+		System.out.println("-----------------------------");
+	}
+
+	public void ListarEjemplaresIdNombre() {
+		System.out.println("----LISTADO DE EJEMPLARES-----");
+		List<Ejemplar> ejemplares = servEjemplar.vertodosEjemplares();
+
+		for (Ejemplar e : ejemplares) {
+			System.out.println("Id: " + e.getId() + " Nombre: " + e.getNombre());
 		}
 		System.out.println("-----------------------------");
 	}
@@ -426,24 +455,13 @@ public class ViveroFachadaAdmin {
 				}
 				switch (opcion) {
 				case 1:
+					
 					break;
 				case 2:
-					System.out.println("Introduce el id de persona");
-					long idPersona = sc.nextLong();
-
-					if (!servPersona.existeidPersona(idPersona)) {
-						System.out.println("El id de la persona no existe");
-						break;
-					} else {
-
-						mensajerepo.mensajesPorIdPersona(idPersona);
-
-					}
+					verMensajesPorIdPersona();
 					break;
-
 				case 3:
-					System.out.println("Introduce el id de Ejemplar");
-					long idEjemplar = sc.nextLong();
+					verMensajesPorTipoPlanta();
 
 					// mensajesServ.verMensajeIdEjemplar();//* Sacar la planta con el id de Ejemplar
 
@@ -460,6 +478,74 @@ public class ViveroFachadaAdmin {
 			}
 
 		} while (opcion != 4);
+
+	}
+
+	private void verMensajesPorTipoPlanta() {
+		Scanner sc = new Scanner(System.in);
+		ListarPlantas();
+
+		System.out.println("Introduce el codigo de la planta: ");
+		String codigo = sc.next();
+
+		if (!servPlanta.existeCodigoPlanta(codigo)) {
+			System.out.println("No existe el codigo");
+		} else {
+
+			System.out.println("----LISTADO DE MENSAJES DE PLANTAS: " + codigo);
+			List<Mensaje> mensaje = servMensaje.listamensajesPorCodigoPlanta(codigo);
+
+			for (Mensaje m : mensaje) {
+				System.out.println("Id: " + m.getId() + " Ejemplar: " + m.getEjemplar().getNombre() + " Fecha: "
+						+ m.getFechahora() + " Mensaje: " + m.getMensaje());
+			}
+			System.out.println("-----------------------------");
+		}
+	}
+	
+	
+
+	private void verMensajesPorFechas() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Introduce la fecha inicial: ");
+		String codigo = sc.next();
+
+		if (!servPlanta.existeCodigoPlanta(codigo)) {
+			System.out.println("No existe el codigo");
+		} else {
+
+			System.out.println("----LISTADO DE MENSAJES DE PLANTAS DE TIPO " + codigo);
+			List<Mensaje> mensaje = servMensaje.listamensajesPorCodigoPlanta(codigo);
+
+			for (Mensaje m : mensaje) {
+				System.out.println("Id: " + m.getId() + " Ejemplar: " + m.getEjemplar().getNombre() + " Fecha: "
+						+ m.getFechahora() + " Mensaje: " + m.getMensaje());
+			}
+			System.out.println("-----------------------------");
+		}
+	}
+
+
+
+	public void verMensajesPorIdPersona() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduce el id de persona");
+		long idPersona = sc.nextLong();
+
+		if (!servPersona.existeidPersona(idPersona)) {
+			System.out.println("El id de la persona no existe");
+		} else {
+			List<Mensaje> mensajes = servMensaje.listamensajesPorIdPersona(idPersona);
+
+			System.out.println("----LISTADO DE MENSAJES DE ID: " + idPersona);
+
+			for (Mensaje m : mensajes) {
+				System.out.println("Id: " + m.getId() + " Ejemplar: " + m.getEjemplar().getNombre() + " Fecha: "
+						+ m.getFechahora() + " Mensaje: " + m.getMensaje());
+			}
+			System.out.println("-----------------------------");
+		}
 
 	}
 
