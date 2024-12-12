@@ -15,13 +15,7 @@ import com.Tarea3DWESOscar.vista.ViveroFachadaInvitado;
 import com.Tarea3DWESOscar.vista.ViveroFachadaPersonal;
 
 @SpringBootApplication
-public class Principal implements CommandLineRunner {
-//	@Autowired
-//	ServiciosPlanta servplanta;
-//
-//	@Autowired
-//	ServiciosCredenciales servCredenciales;
-	
+public class Principal implements CommandLineRunner {	
 	@Autowired
 	ViveroFachadaInvitado fachadaInvitado;
 
@@ -33,7 +27,10 @@ public class Principal implements CommandLineRunner {
 
 	@Autowired
 	Controlador controlador;
-
+	
+	@Autowired
+	ServiciosCredenciales servCredenciales;
+	
 	@Override
 	public void run(String... args) throws Exception {
 
